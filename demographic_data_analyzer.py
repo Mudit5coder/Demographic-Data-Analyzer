@@ -25,9 +25,9 @@ def calculate_demographic_data(print_data=True):
 
     # with and without `Bachelors`, `Masters`, or `Doctorate`
     bach1 = len(df[(df["education-num"] >= 13) & (df["salary"] == ">50K")])
-    Num_of_people_higher_education = (df["education-num"] >=13).sum()
+    Num_of_people_higher_education = len(df["education-num"] >=13)
     bach2 = len(df[(df["education-num"] < 13) & (df["salary"] == ">50K")])
-    People_with_lower_education = (df["education-num"] < 13).sum()
+    People_with_lower_education = len(df["education-num"] < 13)
 
     # percentage with salary >50K
     higher_education_rich = round((bach1/Num_of_people_higher_education)*100,1)

@@ -37,16 +37,27 @@ def calculate_demographic_data(print_data=True):
     min_work_hours = df["hours-per-week"].min()
 
     # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
-    num_min_workers = None
+    num_min_workers = (df["hours-per-week"] == min_work_hours).sum()
+    people_with_min_high_wage = len(df[(df["hours-per-week"] == min_work_hours) & (df["salary"] == ">50K")])
 
-    rich_percentage = None
+    rich_percentage = round((people_with_min_high_wage/num_min_workers)*100,1)
 
     # What country has the highest percentage of people that earn >50K?
-    highest_earning_country = None
-    highest_earning_country_percentage = None
+    filtered_df = df[df['salary'] == ">50K"]
+    country_count =  filtered_df["native-country"].value_counts()
+    total_count = df["native-country"].value_counts()
+    
+    percentage = (country_count / total_count) * 100
+
+    # Find the country with the highest percentage
+    highest_earning_country = percentage.idxmax()
+    highest_earning_country_percentage = round(percentage[highest_earning_country],1)
+
 
     # Identify the most popular occupation for those who earn >50K in India.
-    top_IN_occupation = None
+    filtered1_df = filtered_df[filtered_df['native-country'] == "India"]
+    occupation_count =  filtered1_df["occupation"].value_counts()
+    top_IN_occupation = occupation_count.idxmax()
 
     # DO NOT MODIFY BELOW THIS LINE
 

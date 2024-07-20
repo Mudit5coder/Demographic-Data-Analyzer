@@ -9,30 +9,29 @@ def calculate_demographic_data(print_data=True):
     # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
     race_count =  df["race"].value_counts()
 
-
     # What is the average age of men?
     men = df[df["sex"] == "Male"]
     average_age_men = men["age"].mean()
+    average_age_men = round(average_age_men,1)
 
     # What is the percentage of people who have a Bachelor's degree?
     total_people = len(df)
-    print (total_people)
     bach = (df["education-num"] == 13).sum()
-    print(bach)
     percentage_bachelors = (bach/total_people)*100
+    percentage_bachelors = round(percentage_bachelors,1)
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
-    bach1 = len(df[(df["education-num"] >= 13) & (df["salary"] == ">50K")])
-    print(bach1)
-    idk = (df["salary"] == ">50K").sum()
-    print(idk)
-    idk1 = (df["salary"] == "<=50K").sum()
-    print(idk1)
-    higher_education_rich = (idk/bach1)*100
     # What percentage of people without advanced education make more than 50K?
-    bach2 = len(df[(df["education-num"] <= 13) & (df["salary"] == ">50K")])
-    print(bach2)
-    lower_education_rich = (bach2/total_people)*100
+
+    # with and without `Bachelors`, `Masters`, or `Doctorate`
+    bach1 = len(df[(df["education-num"] >= 13) & (df["salary"] == ">50K")])
+    Num_of_people_higher_education = (df["education-num"] >=13).sum()
+    bach2 = len(df[(df["education-num"] < 13) & (df["salary"] == ">50K")])
+    People_with_lower_education = (df["education-num"] < 13).sum()
+
+    # percentage with salary >50K
+    higher_education_rich = round((bach1/Num_of_people_higher_education)*100,1)
+    lower_education_rich = round((bach2/People_with_lower_education)*100,1)
 
     # What is the minimum number of hours a person works per week (hours-per-week feature)?
     min_work_hours = df["hours-per-week"].min()

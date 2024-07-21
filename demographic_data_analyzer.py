@@ -22,15 +22,22 @@ def calculate_demographic_data(print_data=True):
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # What percentage of people without advanced education make more than 50K?
-
+    #degree_count =  df["education-num"].value_counts()
+    #print(degree_count)
     # with and without `Bachelors`, `Masters`, or `Doctorate`
-    bach1 = len(df[(df["education-num"] >= 13) & (df["salary"] == ">50K")])
-    Num_of_people_higher_education = len(df["education-num"] >=13)
+    bach1 = len(df[(df["education-num"] == 13) & (df["salary"] == ">50K")])
+    print(bach1)
+    bach11 = len(df[(df["education-num"] == 14) & (df["salary"] == ">50K")])
+    print(bach11)
+    bach12 = len(df[(df["education-num"] == 16) & (df["salary"] == ">50K")])
+    print(bach12)
+    Num_of_people_higher_education = (df["education-num"] ==13).sum()+(df["education-num"] ==16).sum()+(df["education-num"] ==14).sum()
+    bach4 = ((df["education-num"] >= 13) & (df["education-num"] <= 14)).sum()    
     bach2 = len(df[(df["education-num"] < 13) & (df["salary"] == ">50K")])
-    People_with_lower_education = len(df["education-num"] < 13)
+    People_with_lower_education = (df["education-num"] < 13).sum()
 
     # percentage with salary >50K
-    higher_education_rich = round((bach1/Num_of_people_higher_education)*100,1)
+    higher_education_rich = round(((bach1+bach11+bach12)/bach4)*100,1)
     lower_education_rich = round((bach2/People_with_lower_education)*100,1)
 
     # What is the minimum number of hours a person works per week (hours-per-week feature)?

@@ -17,6 +17,7 @@ def calculate_demographic_data(print_data=True):
     # What is the percentage of people who have a Bachelor's degree?
     total_people = len(df)
     bach = (df["education-num"] == 13).sum()
+    print(bach)
     percentage_bachelors = (bach/total_people)*100
     percentage_bachelors = round(percentage_bachelors,1)
 
@@ -26,18 +27,19 @@ def calculate_demographic_data(print_data=True):
     #print(degree_count)
     # with and without `Bachelors`, `Masters`, or `Doctorate`
     bach1 = len(df[(df["education-num"] == 13) & (df["salary"] == ">50K")])
-    print(bach1)
+    
     bach11 = len(df[(df["education-num"] == 14) & (df["salary"] == ">50K")])
-    print(bach11)
+    
     bach12 = len(df[(df["education-num"] == 16) & (df["salary"] == ">50K")])
-    print(bach12)
-    Num_of_people_higher_education = (df["education-num"] ==13).sum()+(df["education-num"] ==16).sum()+(df["education-num"] ==14).sum()
-    bach4 = ((df["education-num"] >= 13) & (df["education-num"] <= 14)).sum()    
-    bach2 = len(df[(df["education-num"] < 13) & (df["salary"] == ">50K")])
-    People_with_lower_education = (df["education-num"] < 13).sum()
+    
+    Num_of_people_higher_education = (df["education-num"] ==13).sum()+(df["education-num"] ==16).sum()+(df["education-num"] ==14).sum()   
+    bach2 = (df["salary"] == ">50K").sum()
+    bach2 = bach2 - (bach1 + bach11 + bach12)
+    print(bach2)
+    People_with_lower_education = total_people - (Num_of_people_higher_education)
 
     # percentage with salary >50K
-    higher_education_rich = round(((bach1+bach11+bach12)/bach4)*100,1)
+    higher_education_rich = round(((bach1+bach11+bach12)/Num_of_people_higher_education)*100,1)
     lower_education_rich = round((bach2/People_with_lower_education)*100,1)
 
     # What is the minimum number of hours a person works per week (hours-per-week feature)?
@@ -65,7 +67,6 @@ def calculate_demographic_data(print_data=True):
     filtered1_df = filtered_df[filtered_df['native-country'] == "India"]
     occupation_count =  filtered1_df["occupation"].value_counts()
     top_IN_occupation = occupation_count.idxmax()
-
     # DO NOT MODIFY BELOW THIS LINE
 
     if print_data:
